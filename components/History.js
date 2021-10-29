@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { onSnapshot, doc } from 'firebase/firestore'
 import { db, auth } from '../firebase/initFirebase'
-import Messages from '../components/Messages'
+import PastRecords from './PastRecords'
 import { onAuthStateChanged } from '@firebase/auth';
 
 export default function history () {
@@ -28,8 +28,8 @@ export default function history () {
       }, [user]);
 
     return (
-        <div>
-            { user && <Messages messages={pastMessages} />}
-        </div>
+        <>
+            { user && <PastRecords messages={pastMessages} />}
+        </>
     )
 }

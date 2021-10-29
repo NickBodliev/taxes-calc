@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const Message = ({name}) => {
+export const Message = ({year, earnings, taxes, guadagnoPuro}) => {
     return (
-        <li>{name}</li>
+        <li>{year} : {earnings} - {taxes} = {guadagnoPuro}</li>
     )
 }

@@ -1,6 +1,7 @@
 import { Button, Form, FormLayout, TextField, Stack, Select, Toast } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 import * as calc from '../components/Calc';
+import WriteToCloudFirestore from "./cloudFirestore/Write";
 
 export default function FormOnSubmitExample() {
     const [earnings, setEarnings] = useState('');
@@ -65,6 +66,7 @@ export default function FormOnSubmitExample() {
             alert('guadagno puro:' + result.guadagnoPuro);
             break;
         }
+        WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
         //alert(activityType);
         toggleToast();
       }

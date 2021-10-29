@@ -26,25 +26,18 @@ export const calcIRES = (guadagno) => {
 }
 
 export const calcIRPEF = (guadagnoAnnuo, utileSuCuiApplicare) => {
-    const percentualeIRPEF = definisciScaglione(guadagnoAnnuo);
-    const IRPEF = calcPercentage(percentualeIRPEF, utileSuCuiApplicare);
-    return IRPEF;
-}
-
-export const definisciScaglione = (guadagnoAnnuo) => {
     if(guadagnoAnnuo <= 15000){
-        return 23;
+        return calcPercentage(23, utileSuCuiApplicare);
     }else if(guadagnoAnnuo > 15000 && guadagnoAnnuo <= 28000){
-        return 27;
+        return calcPercentage(23, 15000) + calcPercentage(27, utileSuCuiApplicare-15000);
     }else if(guadagnoAnnuo > 28000 && guadagnoAnnuo <= 55000){
-        return 38;
+        return calcPercentage(23, 15000) + calcPercentage(27, 13000) + calcPercentage(38, utileSuCuiApplicare-55000);
     }else if(guadagnoAnnuo > 55000 && guadagnoAnnuo <= 75000){
-        return 41;
+        return calcPercentage(23, 15000) + calcPercentage(27, 13000) + calcPercentage(38, 27000) + calcPercentage(41, utileSuCuiApplicare-55000);
     }else if(guadagnoAnnuo > 75000){
-        return 43;
+        return calcPercentage(23, 15000) + calcPercentage(27, 13000) + calcPercentage(38, 27000) + calcPercentage(41, 20000) + calcPercentage(43, 20000);
     }
 }
-
 
 export const societaDiPersone = (earning, expenses) => {
     const IVAToPay = scalaIVA(earning, expenses);

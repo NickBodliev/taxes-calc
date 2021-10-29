@@ -5,8 +5,19 @@ import Layout from '../components/Layout'
 
 function MyApp({ Component, pageProps }) {
 
+  const theme = {
+    logo: {
+      width: 80,
+      topBarSource:
+        '/logo.svg',
+      contextualSaveBarSource:
+      '/logo.svg',
+      url: '/'
+    },
+  };
+
   return (
-    <AppProvider>
+    <AppProvider theme={theme} >
       <Layout>
         <Component {...pageProps} />
       </Layout>

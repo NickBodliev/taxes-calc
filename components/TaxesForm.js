@@ -1,5 +1,6 @@
 import { Button, Form, FormLayout, TextField, Stack, Select, Toast } from "@shopify/polaris";
 import { useCallback, useState } from "react";
+import * as calc from '../components/Calc';
 
 export default function FormOnSubmitExample() {
     const [earnings, setEarnings] = useState('');
@@ -39,11 +40,35 @@ export default function FormOnSubmitExample() {
           setTimeout(() => { setYearErrorMsg('') }, 5000);
         }
       }else{
-        //setEarnings('');
-        //setExpenses('');
-        alert(activityType);
+        // setEarnings('');
+        // setExpenses('');
+        let result;
+        switch(activityType){
+          case 'societa-di-capitali':
+            result = calc.societaDiCapitali(earnings, expenses);
+            alert('taxes:' + result.taxes);
+            alert('guadagno puro:' + result.guadagnoPuro);
+            break;
+          case 'societa-di-persone':
+            result = calc.societaDiPersone(earnings, expenses);
+            alert('taxes:' + result.taxes);
+            alert('guadagno puro:' + result.guadagnoPuro);
+            break;
+          case 'partita-iva-ordinaria':
+            result = calc.partitaIVAOrdinaria(earnings, expenses);
+            alert('taxes:' + result.taxes);
+            alert('guadagno puro:' + result.guadagnoPuro);
+            break;
+          case 'partita-iva-forfettaria':
+            result = calc.partitaIVAForfettaria(earnings, expenses);
+            alert('taxes:' + result.taxes);
+            alert('guadagno puro:' + result.guadagnoPuro);
+            break;
+        }
+        //alert(activityType);
         toggleToast();
       }
+      //const a = calc.societaDiPersone(earnings, expenses);
     };
 
     const toastMarkup = activeToast ? (

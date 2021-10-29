@@ -3,6 +3,7 @@ import { auth } from '../firebase/initFirebase'
 import { onAuthStateChanged } from '@firebase/auth'
 import { Layout, Page } from '@shopify/polaris'
 import TaxesForm from '../components/TaxesForm'
+import History from '../components/History'
 
 
 export default function Home() {
@@ -23,6 +24,9 @@ export default function Home() {
       <Layout>
         <Layout.Section>
           <TaxesForm />
+        </Layout.Section>
+        <Layout.Section>
+          <History />
         </Layout.Section>
       </Layout>
     </Page>

@@ -54,11 +54,6 @@ export default function Layout({ children }) {
             onClick: () => strictRedirect("/"),
           },
           {
-            label: "History",
-            icon: ArchiveMajor,
-            onClick: () => strictRedirect("/history"),
-          },
-          {
             label: "My Account",
             icon: KeyMajor,
             onClick: () => redirect("/auth"),

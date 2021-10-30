@@ -18,7 +18,9 @@ function Messages({messages}) {
     }, [messages])
 
     if(records.length === 0){
-        return <p>no messages</p>
+        return (
+          <Card title="Start with adding your first record!" sectioned />
+        )
     }else{
         return(
             <Card title="Past Records" sectioned>
@@ -43,30 +45,3 @@ function Messages({messages}) {
 }
 
 export default Messages
-
-
-// function DataTableExample() {
-  
-//     return (
-//         <Card>
-//           <DataTable
-//             columnContentTypes={[
-//               'text',
-//               'numeric',
-//               'numeric',
-//               'numeric',
-//               'numeric',
-//             ]}
-//             headings={[
-//               'Product',
-//               'Price',
-//               'SKU Number',
-//               'Net quantity',
-//               'Net sales',
-//             ]}
-//             rows={rows}
-//             totals={['', '', '', 255, '$155,830.00']}
-//           />
-//         </Card>
-//     );
-//   }

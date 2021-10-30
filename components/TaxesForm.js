@@ -1,5 +1,5 @@
 import { Button, Form, FormLayout, TextField, Stack, Select, Toast } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import * as calc from '../components/Calc';
 import WriteToCloudFirestore from "./cloudFirestore/Write";
 
@@ -12,8 +12,7 @@ export default function FormOnSubmitExample() {
     const [activityTypeErrorMsg, setActivityTypeErrorMsg] = useState('');
     const [year, setYear] = useState('');
     const [yearErrorMsg, setYearErrorMsg] = useState('');
-    const [activeToast, setActiveToast] = useState(false);
-    const toggleToast = useCallback(() => setActiveToast((active) => !active), []);
+    const [active, setActive] = useState(false);
 
     const handleEarningsChange = (value) => setEarnings(value);
     const handleExpensesChange = (value) => setExpenses(value);
@@ -59,15 +58,9 @@ export default function FormOnSubmitExample() {
             break;
         }
         WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
-        //alert(activityType);
-        toggleToast();
+        setActive(true);
       }
-      //const a = calc.societaDiPersone(earnings, expenses);
     };
-
-    const toastMarkup = activeToast ? (
-      <Toast content="New record was successfully added" onDismiss={toggleToast} />
-    ) : null;
 
     const activityTypes = [
       {label: 'Società di Capitali', value: 'societa-di-capitali'},
@@ -100,7 +93,6 @@ export default function FormOnSubmitExample() {
       {label: '2020', value: '2020'},
       {label: '2021', value: '2021'}
     ];
-
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -157,7 +149,7 @@ export default function FormOnSubmitExample() {
             </Stack.Item>
           </Stack>
         </FormLayout>
-        {toastMarkup}
+        { active && <Toast content="Record added successfully" onDismiss={() => setActive(false)} /> }
       </Form>
     );
   }

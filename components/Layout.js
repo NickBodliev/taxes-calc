@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-import { Frame, Navigation, TopBar } from "@shopify/polaris";
+import { Frame, Navigation, Toast, TopBar } from "@shopify/polaris";
 import { ChatMajor, HomeMajor, KeyMajor } from "@shopify/polaris-icons";
 
 import { onAuthStateChanged, signOut } from "firebase/auth"
@@ -21,7 +21,8 @@ export default function Layout({ children }) {
       ),
     []
   );
-  const strictRedirect = (path) => { (user ? router.push(path) : alert('Login to start Useing this fanastic app')) };
+  const [active, setActive] = useState(false);
+  const strictRedirect = (path) => { (user ? router.push(path) : setActive(true)) };
   const redirect = (path) => { router.push(path) };
 
   onAuthStateChanged(auth, (user) => {
@@ -83,6 +84,7 @@ export default function Layout({ children }) {
         skipToContentTarget={skipToContentRef.current}
       >
         <main>{children}</main>
+        { active && <Toast content="Login in order to access Dashboard" onDismiss={() => setActive(false)} /> }
       </Frame>
     </>
   );

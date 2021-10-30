@@ -62,7 +62,10 @@ export function userMenuComponent(user) {
               items: [{content: 'Log Out', icon: LogOutMinor, onAction: logout}],
             },
             {
-              items: [{content: 'About The Developer'}],
+              items: [
+                      {content: 'About This App', url: 'http://simp.ly/p/fF4mxM'},
+                      {content: 'About Developer', url: 'https://mykola-bodliev.herokuapp.com/'}
+                    ]
             },
           ]}
           name={user.displayName}

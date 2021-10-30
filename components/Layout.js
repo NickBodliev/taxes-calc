@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Frame, Navigation, TopBar } from "@shopify/polaris";
-import { ChatMajor, HomeMajor, ArchiveMajor, KeyMajor } from "@shopify/polaris-icons";
+import { ChatMajor, HomeMajor, KeyMajor } from "@shopify/polaris-icons";
 
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { userMenuComponent } from "./userMenuComponent";
@@ -66,7 +66,7 @@ export default function Layout({ children }) {
           {
             label: "Contact Developer",
             icon: ChatMajor,
-            onClick: () => redirect("/contact_developer"),
+            onClick: () => redirect("mailto:info.mykola.it@gmail.com"),
           },
         ]}
       />

@@ -64,7 +64,7 @@ function FirebaseAuth(props, { globalUser }) {
               <EmptyState
                 heading="Manage your taxes in a smart way"
                 action={(user ? {content: 'Log out', onAction: logout, destructive: true} : {content: 'Log in', onAction: login})}
-                secondaryAction={{content: 'Learn more', url: 'https://help.shopify.com'}}
+                secondaryAction={{content: 'Learn more', url: 'http://simp.ly/p/fF4mxM'}}
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
               >
                 <p>Track and manage your taxes with this app</p>

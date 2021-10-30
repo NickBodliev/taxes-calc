@@ -41,29 +41,21 @@ export default function FormOnSubmitExample() {
           setTimeout(() => { setYearErrorMsg('') }, 5000);
         }
       }else{
-        // setEarnings('');
-        // setExpenses('');
+        setEarnings('');
+        setExpenses('');
         let result;
         switch(activityType){
           case 'societa-di-capitali':
             result = calc.societaDiCapitali(earnings, expenses);
-            alert('taxes:' + result.taxes);
-            alert('guadagno puro:' + result.guadagnoPuro);
             break;
           case 'societa-di-persone':
             result = calc.societaDiPersone(earnings, expenses);
-            alert('taxes:' + result.taxes);
-            alert('guadagno puro:' + result.guadagnoPuro);
             break;
           case 'partita-iva-ordinaria':
             result = calc.partitaIVAOrdinaria(earnings, expenses);
-            alert('taxes:' + result.taxes);
-            alert('guadagno puro:' + result.guadagnoPuro);
             break;
           case 'partita-iva-forfettaria':
             result = calc.partitaIVAForfettaria(earnings, expenses);
-            alert('taxes:' + result.taxes);
-            alert('guadagno puro:' + result.guadagnoPuro);
             break;
         }
         WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
@@ -74,7 +66,7 @@ export default function FormOnSubmitExample() {
     };
 
     const toastMarkup = activeToast ? (
-      <Toast content="Added a new record" onDismiss={toggleToast} />
+      <Toast content="New record was successfully added" onDismiss={toggleToast} />
     ) : null;
 
     const activityTypes = [

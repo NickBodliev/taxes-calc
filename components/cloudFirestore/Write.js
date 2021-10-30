@@ -8,13 +8,12 @@ const WriteToCloudFirestore = async (year, earnings, taxes, guadagnoPuro) => {
         let userEmail = auth.currentUser.email;
         const docSnap = await getDoc(doc(db, "messages", userEmail));
         if(docSnap.exists()){
-            alert('record exists');
+            // update document, first record
             await updateDoc(doc(db, "messages", userEmail), data);
         }else{
+            // create document
             await setDoc(doc(db, "messages", userEmail), data);
-            alert('record added');
         }
-        alert('Data was successfully sent to Firestore');
     }
 
 export default WriteToCloudFirestore;

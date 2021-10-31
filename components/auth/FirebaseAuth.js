@@ -7,7 +7,8 @@ import { saveActivityType } from '../cloudFirestore/Write'
 
 function FirebaseAuth(props, { globalUser }) {
     const [user, setUser] = useState(globalUser);
-    const router = useRouter();
+    const [unsavedChanges, setUnsavedChanges] = useState(false);
+    const [activityType, setActivityType] = useState('');
 
     onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -19,48 +20,19 @@ function FirebaseAuth(props, { globalUser }) {
     }
     });
 
-
     const login = () => {
         signInWithPopup(auth, new GoogleAuthProvider)
-        .then((result) => {
-
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          //const credential = GoogleAuthProvider.credentialFromResult(result);
-          //const token = credential.accessToken;
-          // The signed-in user info.
-          //const user = result.user;
-          //setUser(user);
-          //console.log(user.email);
-          //router.push('/');
-        }).catch((error) => {
+        .catch((error) => {
           // Handle Errors here.
-          //const errorCode = error.code;
+          const errorCode = error.code;
           const errorMessage = error.message;
-          // The email of the user's account used.
-          //const email = error.email;
-          // The AuthCredential type that was used.
-          //const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-
           alert('Ops... smth went wrong during login process. Check console log for more details');
+          console.log(errorCode);
           console.log(errorMessage);
         });
     }
 
-    const logout = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            //setUser(null);
-          }).catch((error) => {
-            // An error happened.
-            console.log(error);
-          });
-    }
-
-    const [activityType, setActivityType] = useState('');
-
   const handleSelectChange = value => {setActivityType(value); setUnsavedChanges(true);};
-  const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   const activityTypes = [
     {label: 'Società di Capitali', value: 'societa-di-capitali'},

@@ -1,6 +1,6 @@
 import { Button, Form, FormLayout, TextField, Stack, Select, Toast } from "@shopify/polaris";
 import { useState } from "react";
-import * as calc from '../components/Calc';
+import * as calc from './calc/Calc';
 import WriteToCloudFirestore from "./cloudFirestore/Write";
 
 export default function FormOnSubmitExample() {

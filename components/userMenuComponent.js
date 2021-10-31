@@ -81,7 +81,10 @@ export function userMenuComponent(user) {
                   items: [{content: 'Log In', icon: KeyMajor, onAction: login}],
                 },
                 {
-                  items: [{content: 'About The Developer'}],
+                  items: [
+                          {content: 'About This App', url: 'http://simp.ly/p/fF4mxM'},
+                          {content: 'About Developer', url: 'https://mykola-bodliev.herokuapp.com/'}
+                        ]
                 },
               ]}
               open={isUserMenuOpen}

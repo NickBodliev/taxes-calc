@@ -7,7 +7,7 @@ import { ChatMajor, HomeMajor, KeyMajor } from "@shopify/polaris-icons";
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { userMenuComponent } from "./userMenuComponent";
 import { db, auth } from '../firebase/initFirebase'
-import { doc, getDoc } from "firebase/firestore";
+import { getActivityType } from "./cloudFirestore/ActivityType";
 
 export default function Layout({ children }) {
   const [user, setUser] = useState();
@@ -31,16 +31,17 @@ export default function Layout({ children }) {
       if (user) {
           // User is signed in
           setUser(user);
-          getActivityType(user.email);
+          getDBActivityType(user.email);
+          //console.log(getActivityType(user.email));
+          //setActivityType(dbActivityType);
       } else {
           // User is signed out
           setUser(null);
       }
     });
 
-    const getActivityType = async (userEmail) => {
-      const docSnap = await getDoc(doc(db, "messages", userEmail));
-      const dbActivityType = await docSnap.data().activityType;
+    const getDBActivityType = async (userEmail) => {
+      const dbActivityType = await getActivityType(userEmail)
       setActivityType(dbActivityType);
     }
 

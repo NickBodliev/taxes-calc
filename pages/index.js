@@ -4,8 +4,8 @@ import { onAuthStateChanged } from '@firebase/auth'
 import { Layout, Page } from '@shopify/polaris'
 import TaxesForm from '../components/TaxesForm'
 import History from '../components/History'
-import { useRouter } from "next/router";
-import { doc, getDoc } from "firebase/firestore";
+import { useRouter } from "next/router"
+import { getActivityType } from '../components/cloudFirestore/ActivityType'
 
 
 export default function Home() {
@@ -18,19 +18,19 @@ export default function Home() {
     if (user) {
         // User is signed in
         setUser(user);
-        getActivityType(user.email);
-        if(!activityType){
-          redirect('/auth');
-        }
+        getDBActivityType(user.email);
+        // setActivityType(getActivityType(user.email));
+        // if(!activityType){
+        //   redirect('/auth');
+        // }
     } else {
         // User is signed out
         redirect('/auth');
     }
   });
 
-  const getActivityType = async (userEmail) => {
-    const docSnap = await getDoc(doc(db, "messages", userEmail));
-    const dbActivityType = await docSnap.data().activityType;
+  const getDBActivityType = async (userEmail) => {
+    const dbActivityType = await getActivityType(userEmail)
     setActivityType(dbActivityType);
   }
 

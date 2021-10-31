@@ -3,6 +3,7 @@ import { signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from
 import { auth } from '../../firebase/initFirebase'
 import { useRouter } from 'next/router';
 import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select } from '@shopify/polaris';
+import { saveActivityType } from '../cloudFirestore/Write'
 
 function FirebaseAuth(props, { globalUser }) {
     const [user, setUser] = useState(globalUser);
@@ -30,7 +31,7 @@ function FirebaseAuth(props, { globalUser }) {
           //const user = result.user;
           //setUser(user);
           //console.log(user.email);
-          router.push('/');
+          //router.push('/');
         }).catch((error) => {
           // Handle Errors here.
           //const errorCode = error.code;
@@ -41,7 +42,7 @@ function FirebaseAuth(props, { globalUser }) {
           //const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
 
-          console.log('Ops... smth went wrong during login process');
+          alert('Ops... smth went wrong during login process. Check console log for more details');
           console.log(errorMessage);
         });
     }
@@ -68,18 +69,23 @@ function FirebaseAuth(props, { globalUser }) {
     {label: 'Partita IVA Forfettaria', value: 'partita-iva-forfettaria'}
   ];
 
+  const updateActivityType = (activityType) => {
+    saveActivityType(activityType);
+    setUnsavedChanges(false);
+  }
+
     return (
       <Page>
         { unsavedChanges == true &&
           <ContextualSaveBar
             message="Unsaved changes"
             saveAction={{
-              onAction: () => console.log('add form submit logic'),
+              onAction: () => updateActivityType(activityType),
               loading: false,
               disabled: false,
             }}
             discardAction={{
-              onAction: () => console.log('add clear form logic'),
+              onAction: () => {setActivityType(''); setUnsavedChanges(false)},
             }}
           />
         }

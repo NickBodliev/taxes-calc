@@ -6,10 +6,12 @@ import { ChatMajor, HomeMajor, KeyMajor } from "@shopify/polaris-icons";
 
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { userMenuComponent } from "./userMenuComponent";
-import { auth } from '../firebase/initFirebase'
+import { db, auth } from '../firebase/initFirebase'
+import { doc, getDoc } from "firebase/firestore";
 
 export default function Layout({ children }) {
   const [user, setUser] = useState();
+  const [activityType, setActivityType] = useState(null);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
   const router = useRouter();
   const userMenuMarkup = userMenuComponent(user);
@@ -22,18 +24,25 @@ export default function Layout({ children }) {
     []
   );
   const [active, setActive] = useState(false);
-  const strictRedirect = (path) => { (user ? router.push(path) : setActive(true)) };
+  const strictRedirect = (path) => { (user && activityType ? router.push(path) : setActive(true)) };
   const redirect = (path) => { router.push(path) };
 
   onAuthStateChanged(auth, (user) => {
       if (user) {
           // User is signed in
           setUser(user);
+          getActivityType(user.email);
       } else {
           // User is signed out
           setUser(null);
       }
     });
+
+    const getActivityType = async (userEmail) => {
+      const docSnap = await getDoc(doc(db, "messages", userEmail));
+      const dbActivityType = await docSnap.data().activityType;
+      setActivityType(dbActivityType);
+    }
 
   const topBarMarkup = (
         <TopBar
@@ -84,7 +93,7 @@ export default function Layout({ children }) {
         skipToContentTarget={skipToContentRef.current}
       >
         <main>{children}</main>
-        { active && <Toast content="Login in order to access Dashboard" onDismiss={() => setActive(false)} /> }
+        { active && <Toast content={!user ? "Login in order to access Dashboard" : "Select your activity type in order to access Dashboard"} onDismiss={() => setActive(false)} /> }
       </Frame>
     </>
   );

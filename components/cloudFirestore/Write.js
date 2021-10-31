@@ -17,3 +17,18 @@ const WriteToCloudFirestore = async (year, earnings, taxes, guadagnoPuro) => {
     }
 
 export default WriteToCloudFirestore;
+
+export const saveActivityType = async (activityType) => {
+    let userEmail = auth.currentUser.email;
+    let data = {
+        activityType: activityType
+    };
+    const docSnap = await getDoc(doc(db, "messages", userEmail));
+    if(docSnap.exists()){
+        // update document
+        await updateDoc(doc(db, "messages", userEmail), data);
+    }else{
+        // create document
+        await setDoc(doc(db, "messages", userEmail), data);
+    }
+}

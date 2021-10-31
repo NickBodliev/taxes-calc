@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth"
 import { auth } from '../../firebase/initFirebase'
 import { useRouter } from 'next/router';
 import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select } from '@shopify/polaris';
 import { saveActivityType } from '../cloudFirestore/Write'
+import { getActivityType } from '../cloudFirestore/ActivityType';
 
-function FirebaseAuth(props, { globalUser }) {
-    const [user, setUser] = useState(globalUser);
+function FirebaseAuth() {
+    const [user, setUser] = useState(null);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     const [activityType, setActivityType] = useState('');
 
@@ -20,6 +21,16 @@ function FirebaseAuth(props, { globalUser }) {
     }
     });
 
+    useEffect(() => {
+      const user = auth.currentUser;
+      if (user) {
+        // User is signed in
+        setUser(user);
+        getDBActivityType(user.email);
+      }
+
+    }, [])
+
     const login = () => {
         signInWithPopup(auth, new GoogleAuthProvider)
         .catch((error) => {
@@ -31,6 +42,12 @@ function FirebaseAuth(props, { globalUser }) {
           console.log(errorMessage);
         });
     }
+
+    const getDBActivityType = async (userEmail) => {
+      const dbActivityType = await getActivityType(userEmail)
+      setActivityType(dbActivityType);
+    }
+
 
   const handleSelectChange = value => {setActivityType(value); setUnsavedChanges(true);};
 

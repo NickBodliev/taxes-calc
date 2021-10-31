@@ -9,6 +9,7 @@ function Messages({messages}) {
             let messagesRecords = messages.data();
             let rows = [];
             for(const prop in messagesRecords){
+              if(prop != 'activityType')
                 rows.push(
                     [prop, messagesRecords[prop].earnings, messagesRecords[prop].taxes, messagesRecords[prop].guadagnoPuro]
                 );

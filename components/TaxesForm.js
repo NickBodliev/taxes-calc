@@ -1,28 +1,28 @@
 import { Button, Form, FormLayout, TextField, Stack, Select, Toast } from "@shopify/polaris";
 import { useState } from "react";
 import * as calc from './calc/Calc';
+import { getActivityType } from "./cloudFirestore/ActivityType";
 import WriteToCloudFirestore from "./cloudFirestore/Write";
+import { auth } from '../firebase/initFirebase'
 
 export default function FormOnSubmitExample() {
     const [earnings, setEarnings] = useState('');
     const [earningsErrorMsg, setEarningsErrorMsg] = useState('');
     const [expenses, setExpenses] = useState('');
     const [expensesErrorMsg, setExpensesErrorMsg] = useState('');
-    const [activityType, setActivityType] = useState('');
-    const [activityTypeErrorMsg, setActivityTypeErrorMsg] = useState('');
+    const [activityType, setActivityType] = useState(null)
     const [year, setYear] = useState('');
     const [yearErrorMsg, setYearErrorMsg] = useState('');
     const [active, setActive] = useState(false);
 
     const handleEarningsChange = (value) => setEarnings(value);
     const handleExpensesChange = (value) => setExpenses(value);
-    const handleSelectChange = (value) => setActivityType(value);
     const handleYearChange = (value) => setYear(value);
 
     const fieldValidationErrorMsg = 'This field is required';
 
-    const handleSubmit = () => {
-      if(earnings == '' || expenses == '' || activityType == '' || year == '' ){
+    const handleSubmit = async () => {
+      if(earnings == '' || expenses == '' || year == '' ){
         if(earnings == ''){
           setEarningsErrorMsg(fieldValidationErrorMsg);
           setTimeout(() => { setEarningsErrorMsg('') }, 5000);
@@ -31,43 +31,42 @@ export default function FormOnSubmitExample() {
           setExpensesErrorMsg(fieldValidationErrorMsg);
           setTimeout(() => { setExpensesErrorMsg('') }, 5000);
         }
-        if(activityType == ''){
-          setActivityTypeErrorMsg(fieldValidationErrorMsg);
-          setTimeout(() => { setActivityTypeErrorMsg('') }, 5000);
-        }
         if(year == ''){
           setYearErrorMsg(fieldValidationErrorMsg);
           setTimeout(() => { setYearErrorMsg('') }, 5000);
         }
       }else{
-        setEarnings('');
-        setExpenses('');
-        let result;
-        switch(activityType){
-          case 'societa-di-capitali':
-            result = calc.societaDiCapitali(earnings, expenses);
-            break;
-          case 'societa-di-persone':
-            result = calc.societaDiPersone(earnings, expenses);
-            break;
-          case 'partita-iva-ordinaria':
-            result = calc.partitaIVAOrdinaria(earnings, expenses);
-            break;
-          case 'partita-iva-forfettaria':
-            result = calc.partitaIVAForfettaria(earnings, expenses);
-            break;
-        }
+        await getDBActivityType(auth.currentUser.email);
+        await setEarnings('');
+        await setExpenses('');
+        const result = getResult(activityType);
         WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
         setActive(true);
       }
     };
 
-    const activityTypes = [
-      {label: 'Società di Capitali', value: 'societa-di-capitali'},
-      {label: 'Società di Persone', value: 'societa-di-persone'},
-      {label: 'Partita IVA Ordinaria', value: 'partita-iva-ordinaria'},
-      {label: 'Partita IVA Forfettaria', value: 'partita-iva-forfettaria'}
-    ];
+    const getDBActivityType = async (userEmail) => {
+      const dbActivityType = await getActivityType(userEmail)
+      setActivityType(dbActivityType);
+    }
+    const getResult = (activityType) => {
+      let result;
+      switch(activityType){
+        case 'societa-di-capitali':
+          result = calc.societaDiCapitali(earnings, expenses);
+          break;
+        case 'societa-di-persone':
+          result = calc.societaDiPersone(earnings, expenses);
+          break;
+        case 'partita-iva-ordinaria':
+          result = calc.partitaIVAOrdinaria(earnings, expenses);
+          break;
+        case 'partita-iva-forfettaria':
+          result = calc.partitaIVAForfettaria(earnings, expenses);
+          break;
+      }
+      return result;
+    }
 
     const years = [
       {label: '2000', value: '2000'},
@@ -97,14 +96,6 @@ export default function FormOnSubmitExample() {
     return (
       <Form onSubmit={handleSubmit}>
         <FormLayout>
-          <Select
-            label="Activity type"
-            options={activityTypes}
-            onChange={handleSelectChange}
-            value={activityType}
-            placeholder="Activity type"
-            error={activityTypeErrorMsg}
-          />
           <Stack>
             <Stack.Item fill>
               <TextField

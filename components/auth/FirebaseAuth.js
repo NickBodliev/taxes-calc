@@ -9,6 +9,7 @@ import { getActivityType } from '../cloudFirestore/ActivityType';
 function FirebaseAuth() {
     const [user, setUser] = useState(null);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
+    const [DBActivityType, setDBActivityType] = useState('');
     const [activityType, setActivityType] = useState('');
 
     onAuthStateChanged(auth, (user) => {
@@ -44,7 +45,8 @@ function FirebaseAuth() {
     }
 
     const getDBActivityType = async (userEmail) => {
-      const dbActivityType = await getActivityType(userEmail)
+      const dbActivityType = await getActivityType(userEmail);
+      setDBActivityType(dbActivityType);
       setActivityType(dbActivityType);
     }
 
@@ -74,7 +76,7 @@ function FirebaseAuth() {
               disabled: false,
             }}
             discardAction={{
-              onAction: () => {setActivityType(''); setUnsavedChanges(false)},
+              onAction: () => {setActivityType(DBActivityType); setUnsavedChanges(false)},
             }}
           />
         }

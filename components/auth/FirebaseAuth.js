@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth"
 import { auth } from '../../firebase/initFirebase'
 import { useRouter } from 'next/router';
-import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select, TextStyle } from '@shopify/polaris';
+import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select, TextStyle, Toast } from '@shopify/polaris';
 import { saveActivityType } from '../cloudFirestore/Write'
 import { getActivityType } from '../cloudFirestore/ActivityType';
 
@@ -11,6 +11,7 @@ function FirebaseAuth() {
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     const [DBActivityType, setDBActivityType] = useState('');
     const [activityType, setActivityType] = useState('');
+    const [active, setActive] = useState(false);
 
     onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -45,7 +46,9 @@ function FirebaseAuth() {
     }
 
     const getDBActivityType = async (userEmail) => {
+      console.log('hello');
       const dbActivityType = await getActivityType(userEmail);
+      console.log(dbActivityType);
       setDBActivityType(dbActivityType);
       setActivityType(dbActivityType);
     }
@@ -71,7 +74,7 @@ function FirebaseAuth() {
           <ContextualSaveBar
             message="Unsaved changes"
             saveAction={{
-              onAction: () => updateActivityType(activityType),
+              onAction: () => {updateActivityType(activityType); setActive(true)},
               loading: false,
               disabled: false,
             }}
@@ -115,6 +118,7 @@ function FirebaseAuth() {
           </Layout.Section>
           }
         </Layout>
+        { active && <Toast content="Activity Type changed successfully" onDismiss={() => setActive(false)} /> }
       </Page>
     )
 }

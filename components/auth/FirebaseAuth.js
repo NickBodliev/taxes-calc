@@ -17,21 +17,12 @@ function FirebaseAuth() {
     if (user) {
         // User is signed in
         setUser(user);
+        getDBActivityType(user.email);
     } else {
         // User is signed out
         setUser(null);
     }
     });
-
-    useEffect(() => {
-      const user = auth.currentUser;
-      if (user) {
-        // User is signed in
-        setUser(user);
-        getDBActivityType(user.email);
-      }
-
-    }, [])
 
     const login = () => {
         signInWithPopup(auth, new GoogleAuthProvider)
@@ -46,11 +37,11 @@ function FirebaseAuth() {
     }
 
     const getDBActivityType = async (userEmail) => {
-      console.log('hello');
+      //console.log('h');
       const dbActivityType = await getActivityType(userEmail);
-      console.log(dbActivityType);
       setDBActivityType(dbActivityType);
       setActivityType(dbActivityType);
+      //alert(activityType);
     }
 
 

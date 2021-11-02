@@ -10,7 +10,6 @@ export default function FormOnSubmitExample() {
     const [earningsErrorMsg, setEarningsErrorMsg] = useState('');
     const [expenses, setExpenses] = useState('');
     const [expensesErrorMsg, setExpensesErrorMsg] = useState('');
-    const [activityType, setActivityType] = useState(null)
     const [year, setYear] = useState('');
     const [yearErrorMsg, setYearErrorMsg] = useState('');
     const [active, setActive] = useState(false);
@@ -36,19 +35,25 @@ export default function FormOnSubmitExample() {
           setTimeout(() => { setYearErrorMsg('') }, 5000);
         }
       }else{
-        await getDBActivityType(auth.currentUser.email);
-        await setEarnings('');
-        await setExpenses('');
-        const result = getResult(activityType);
-        WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
+        const activityType = await getDBActivityType(auth.currentUser.email);
+        const result = await getResult(activityType);
+        await WriteToCloudFirestore(year, earnings, result.taxes, result.guadagnoPuro);
+        emptyInputs();
         setActive(true);
       }
     };
 
     const getDBActivityType = async (userEmail) => {
       const dbActivityType = await getActivityType(userEmail)
-      setActivityType(dbActivityType);
+      return dbActivityType;
     }
+
+    const emptyInputs = () => {
+      setEarnings('');
+      setExpenses('');
+      setYear('');
+    }
+
     const getResult = (activityType) => {
       let result;
       switch(activityType){

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Frame, Navigation, Toast, TopBar } from "@shopify/polaris";
@@ -24,25 +24,29 @@ export default function Layout({ children }) {
     []
   );
   const [active, setActive] = useState(false);
-  const strictRedirect = (path) => { (user && activityType ? router.push(path) : setActive(true)) };
+  const strictRedirect = (path) => { (user && activityType ? redirect('/') : setActive(true)) };
   const redirect = (path) => { router.push(path) };
 
-  onAuthStateChanged(auth, (user) => {
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
           // User is signed in
           setUser(user);
           getDBActivityType(user.email);
-          //console.log(getActivityType(user.email));
-          //setActivityType(dbActivityType);
       } else {
           // User is signed out
           setUser(null);
       }
     });
+  }, [])
 
     const getDBActivityType = async (userEmail) => {
       const dbActivityType = await getActivityType(userEmail)
       setActivityType(dbActivityType);
+    }
+
+    const dbActivityTypeListener = (userEmail) => {
+      onSnapshot(doc(db, 'messages', userEmail), data => { setActivityType(data.activityType) });
     }
 
   const topBarMarkup = (

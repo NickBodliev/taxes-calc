@@ -14,25 +14,26 @@ export default function Home() {
   const router = useRouter();
   const redirect = (path) => { router.push(path) };
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // User is signed in
-        setUser(user);
-        getDBActivityType(user.email);
-        // setActivityType(getActivityType(user.email));
-        // if(!activityType){
-        //   redirect('/auth');
-        // }
-    } else {
-        // User is signed out
-        redirect('/auth');
-    }
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+          // User is signed in
+          setUser(user);
+          await getDBActivityType(user.email);
+          if(!activityType)
+            redirect('/auth');
+      } else {
+          // User is signed out
+          redirect('/auth');
+      }
+    });
+  }, [])
 
   const getDBActivityType = async (userEmail) => {
     const dbActivityType = await getActivityType(userEmail)
     setActivityType(dbActivityType);
   }
+
 
   return (
     <Page title="Details page">

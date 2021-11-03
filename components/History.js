@@ -9,22 +9,17 @@ export default function history () {
     const [user, setUser] = useState(null);
     const [pastMessages, setPastMessages] = useState(null);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in
-            setUser(user);
-        } else {
-            // User is signed out
-            setUser(null);
-        }
-    });
-
     useEffect(() => {
-        // running on user change
-        if(user){
-          const userEmail = user.email;
-          onSnapshot(doc(db, 'messages', userEmail), data => { setPastMessages(data) });
-        }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                setUser(user);
+                onSnapshot(doc(db, 'messages', user.email), data => { setPastMessages(data) });
+            } else {
+                // User is signed out
+                setUser(null);
+            }
+        });
       }, [user]);
 
     return (

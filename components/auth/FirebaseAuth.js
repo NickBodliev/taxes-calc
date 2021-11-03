@@ -13,16 +13,18 @@ function FirebaseAuth() {
     const [activityType, setActivityType] = useState('');
     const [active, setActive] = useState(false);
 
-    onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // User is signed in
-        setUser(user);
-        getDBActivityType(user.email);
-    } else {
-        // User is signed out
-        setUser(null);
-    }
-    });
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            setUser(user);
+            getDBActivityType(user.email);
+        } else {
+            // User is signed out
+            setUser(null);
+        }
+        });
+    }, [])
 
     const login = () => {
         signInWithPopup(auth, new GoogleAuthProvider)
@@ -30,18 +32,16 @@ function FirebaseAuth() {
           // Handle Errors here.
           const errorCode = error.code;
           const errorMessage = error.message;
-          alert('Ops... smth went wrong during login process. Check console log for more details');
+          //alert('Ops... smth went wrong during login process. Check console log for more details');
           console.log(errorCode);
           console.log(errorMessage);
         });
     }
 
     const getDBActivityType = async (userEmail) => {
-      //console.log('h');
       const dbActivityType = await getActivityType(userEmail);
       setDBActivityType(dbActivityType);
       setActivityType(dbActivityType);
-      //alert(activityType);
     }
 
 

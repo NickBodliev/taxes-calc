@@ -20,8 +20,6 @@ export default function Home() {
           // User is signed in
           setUser(user);
           await getDBActivityType(user.email);
-          if(!activityType)
-            redirect('/auth');
       } else {
           // User is signed out
           redirect('/auth');
@@ -32,6 +30,8 @@ export default function Home() {
   const getDBActivityType = async (userEmail) => {
     const dbActivityType = await getActivityType(userEmail)
     setActivityType(dbActivityType);
+    if(!dbActivityType)
+      redirect('/auth');
   }
 
 

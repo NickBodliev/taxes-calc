@@ -8,6 +8,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth"
 import { userMenuComponent } from "./userMenuComponent";
 import { db, auth } from '../firebase/initFirebase'
 import { getActivityType } from "./cloudFirestore/ActivityType";
+import { doc, onSnapshot } from "@firebase/firestore";
 
 export default function Layout({ children }) {
   const [user, setUser] = useState();
@@ -24,7 +25,7 @@ export default function Layout({ children }) {
     []
   );
   const [active, setActive] = useState(false);
-  const strictRedirect = (path) => { (user && activityType ? redirect('/') : setActive(true)) };
+  const strictRedirect = (path) => { console.log(activityType);(user && activityType ? redirect(path) : setActive(true)) };
   const redirect = (path) => { router.push(path) };
 
   useEffect(() => {
@@ -32,7 +33,10 @@ export default function Layout({ children }) {
       if (user) {
           // User is signed in
           setUser(user);
-          getDBActivityType(user.email);
+          //dbActivityTypeListener(user.email);
+          onSnapshot(doc(db, 'messages', user.email), data => {
+            try { setActivityType(data.data().activityType);
+            }catch (error) {setActivityType(null)} });
       } else {
           // User is signed out
           setUser(null);
@@ -46,7 +50,9 @@ export default function Layout({ children }) {
     }
 
     const dbActivityTypeListener = (userEmail) => {
-      onSnapshot(doc(db, 'messages', userEmail), data => { setActivityType(data.activityType) });
+      onSnapshot(doc(db, 'messages', userEmail), data => { try {
+        setActivityType(data.activityType);
+      } catch (error) {setActivityType(null)} });
     }
 
   const topBarMarkup = (

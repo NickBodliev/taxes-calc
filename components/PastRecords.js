@@ -1,4 +1,4 @@
-import { Button, Card, IndexTable, TextStyle } from '@shopify/polaris';
+import { Button, Card, IndexTable, TextStyle, Toast } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react'
 import { DeleteMinor } from '@shopify/polaris-icons';
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -7,6 +7,7 @@ import { db, auth } from '../firebase/initFirebase'
 
 function Messages({messages}) {
     const [records, setRecords] = useState([]);
+    const [active, setActive] = useState(false);
 
     const resourceName = {
       singular: 'Record',
@@ -19,7 +20,7 @@ function Messages({messages}) {
       let data = docSnap.data();
       delete data[year];
       await setDoc(docRef, data);
-      console.log("Document data:", data);
+      setActive(true);
     }
 
     useEffect(() => {
@@ -47,6 +48,7 @@ function Messages({messages}) {
         )
     }else{
         return(
+          <>
             <Card title="Past Records" sectioned>
               <IndexTable
                 resourceName={resourceName}
@@ -62,6 +64,8 @@ function Messages({messages}) {
                 {records}
               </IndexTable>
             </Card>
+            { active && <Toast content="Record deleted successfully" onDismiss={() => setActive(false)} /> }
+            </>
       )
     }
 }

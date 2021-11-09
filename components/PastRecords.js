@@ -6,14 +6,11 @@ function Messages({messages}) {
 
     useEffect(() => {
         if(messages != null && messages != undefined){
-            let messagesRecords = messages.data();
-            let rows = [];
-            for(const prop in messagesRecords){
-              if(prop != 'activityType')
-                rows.push(
-                    [prop, messagesRecords[prop].earnings, messagesRecords[prop].taxes, messagesRecords[prop].guadagnoPuro]
-                );
-            }
+          let rows = messages.map(
+            ({year, earnings, taxes, guadagnoPuro}) =>
+              [year, earnings, taxes, guadagnoPuro]
+            );
+            console.log(rows);
             setRecords(rows);
         }
     }, [messages])

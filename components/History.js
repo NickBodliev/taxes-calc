@@ -9,12 +9,34 @@ export default function history () {
     const [user, setUser] = useState(null);
     const [pastMessages, setPastMessages] = useState(null);
 
+    const transformToVettoreDiOggetti = (dataType) => {
+
+        // {
+        //   {
+        //     { year: {earnings, taxes, guadagnoPuro} },   =>  [{year, earnings, taxes, guadagnoPuro},]
+        //   }
+        // }
+
+        dataType = Object.entries(dataType).map((e) => ( { [e[0]]: e[1] } ));
+        let finalReult = [];
+        for (const element of dataType) {
+          for(const [key, value] of Object.entries(element)){
+            if(key != 'activityType')
+            finalReult.push([element][key] = Object.assign({year: key}, element[key]));
+          }
+        }
+        return finalReult;
+      }
+
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 // User is signed in
                 setUser(user);
-                onSnapshot(doc(db, 'messages', user.email), data => { setPastMessages(data) });
+                onSnapshot(doc(db, 'messages', user.email), data => {
+                    const messages = transformToVettoreDiOggetti(data.data());
+                    setPastMessages(messages);
+                });
             } else {
                 // User is signed out
                 setUser(null);

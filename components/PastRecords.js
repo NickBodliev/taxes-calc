@@ -1,15 +1,26 @@
 import { Button, Card, IndexTable, TextStyle } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react'
-import {
-  DeleteMinor
-} from '@shopify/polaris-icons';
+import { DeleteMinor } from '@shopify/polaris-icons';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db, auth } from '../firebase/initFirebase'
+
 
 function Messages({messages}) {
     const [records, setRecords] = useState([]);
+
     const resourceName = {
       singular: 'Record',
       plural: 'Records',
     };
+
+    const removeRecord = async (year) => {
+      const docRef = doc(db, 'messages', auth.currentUser.email);
+      const docSnap = await getDoc(docRef);
+      let data = docSnap.data();
+      delete data[year];
+      await setDoc(docRef, data);
+      console.log("Document data:", data);
+    }
 
     useEffect(() => {
         if(messages != null && messages != undefined){
@@ -22,7 +33,7 @@ function Messages({messages}) {
                 <IndexTable.Cell>{earnings}</IndexTable.Cell>
                 <IndexTable.Cell>{taxes}</IndexTable.Cell>
                 <IndexTable.Cell>{guadagnoPuro}</IndexTable.Cell>
-                <Button onClick={() => alert(year)} icon={DeleteMinor}/>
+                <Button onClick={() => removeRecord(year)} icon={DeleteMinor}/>
               </IndexTable.Row>
             ),
           );

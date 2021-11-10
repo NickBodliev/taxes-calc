@@ -1,7 +1,7 @@
-import { Button, Card, IndexTable, TextStyle, Toast } from '@shopify/polaris';
+import { Button, Card, IndexTable, TextStyle, Toast, Stack } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react'
 import { DeleteMinor } from '@shopify/polaris-icons';
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { db, auth } from '../firebase/initFirebase'
 
 
@@ -21,6 +21,14 @@ function Messages({messages}) {
       delete data[year];
       await setDoc(docRef, data);
       setActive(true);
+    }
+
+    const deleteAllRecords = async() => {
+      const docRef = doc(db, 'messages', auth.currentUser.email);
+      const docSnap = await getDoc(docRef);
+      const activityType = docSnap.data().activityType;
+      await deleteDoc(docRef);
+      await setDoc(docRef, {activityType: activityType});
     }
 
     useEffect(() => {
@@ -63,6 +71,12 @@ function Messages({messages}) {
               >
                 {records}
               </IndexTable>
+              <Stack>
+  <Stack.Item fill></Stack.Item>
+  <Stack.Item>
+    <Button destructive onClick={deleteAllRecords}>Delete all records</Button>
+  </Stack.Item>
+  </Stack>
             </Card>
             { active && <Toast content="Record deleted successfully" onDismiss={() => setActive(false)} /> }
             </>

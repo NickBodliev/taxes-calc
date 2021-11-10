@@ -34,8 +34,14 @@ export default function history () {
                 // User is signed in
                 setUser(user);
                 onSnapshot(doc(db, 'messages', user.email), data => {
-                    const messages = transformToVettoreDiOggetti(data.data());
-                    setPastMessages(messages);
+                    let processedData = data.data();
+                    if(processedData != undefined && processedData != null){
+                        delete processedData.activityType;
+                        if(processedData != {}){
+                            const messages = transformToVettoreDiOggetti(processedData);
+                            setPastMessages(messages);
+                        }
+                    }
                 });
             } else {
                 // User is signed out

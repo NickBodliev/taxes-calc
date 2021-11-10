@@ -13,6 +13,7 @@ export default function Home() {
   const [activityType, setActivityType] = useState(null);
   const router = useRouter();
   const redirect = (path) => { router.push(path) };
+  const [activityTypeOutput, setActivityTypeOutput] = useState('')
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -30,13 +31,31 @@ export default function Home() {
   const getDBActivityType = async (userEmail) => {
     const dbActivityType = await getActivityType(userEmail)
     setActivityType(dbActivityType);
-    if(!dbActivityType)
+    if(!dbActivityType){
       redirect('/auth');
+    }else{
+      switch (dbActivityType) {
+        case 'societa-di-capitali':
+          setActivityTypeOutput('Società di Capitali');
+          break;
+        case 'societa-di-persone':
+          setActivityTypeOutput('Società di Persone');
+          break;
+        case 'partita-iva-ordinaria':
+          setActivityTypeOutput('Partita IVA Ordinaria');
+          break;
+        case 'partita-iva-forfettaria':
+          setActivityTypeOutput('Partita IVA Forfettaria');
+          break;
+        default:
+          setActivityTypeOutput('');
+      }
+    }
   }
 
 
   return (
-    <Page title="Details page">
+    <Page title={`Calc taxes for your ${activityTypeOutput} activity`}>
       <Layout>
         <Layout.Section>
           <TaxesForm />

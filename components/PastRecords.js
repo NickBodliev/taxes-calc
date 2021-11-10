@@ -29,6 +29,8 @@ function Messages({messages}) {
       const activityType = docSnap.data().activityType;
       await deleteDoc(docRef);
       await setDoc(docRef, {activityType: activityType});
+      //alert('deleted');
+      setActive(true);
     }
 
     useEffect(() => {
@@ -52,7 +54,10 @@ function Messages({messages}) {
 
     if(records.length === 0){
         return (
+          <>
           <Card title="Start with adding your first record!" sectioned />
+          { active && <Toast content="Records deleted successfully" onDismiss={() => setActive(false)} /> }
+          </>
         )
     }else{
         return(
@@ -72,11 +77,11 @@ function Messages({messages}) {
                 {records}
               </IndexTable>
               <Stack>
-  <Stack.Item fill></Stack.Item>
-  <Stack.Item>
-    <Button destructive onClick={deleteAllRecords}>Delete all records</Button>
-  </Stack.Item>
-  </Stack>
+              <Stack.Item fill/>
+              <Stack.Item>
+                <Button destructive onClick={deleteAllRecords}>Delete all records</Button>
+              </Stack.Item>
+              </Stack>
             </Card>
             { active && <Toast content="Record deleted successfully" onDismiss={() => setActive(false)} /> }
             </>

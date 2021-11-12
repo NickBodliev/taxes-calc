@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 
 function LineChart({messages}) {
-    const [data, setData] = useState('')
+    const [data, setData] = useState(null)
 
     useEffect(() => {
         if(messages != null && messages != undefined){
@@ -25,16 +25,30 @@ function LineChart({messages}) {
                 taxes.data.push(message.taxes);
                 guadagnoPuro.data.push(message.guadagnoPuro);
             });
+            setColor(earnings, 'rgba(255, 206, 86, 0.5)');
+            setColor(taxes, 'rgba(54, 162, 235, 0.3)');
+            setColor(guadagnoPuro, 'rgba(255, 0, 255, 0.3)');
             const data = {
                 labels: years,
                 datasets: [ earnings, taxes, guadagnoPuro ]
             }
+            console.log(data);
             setData(data);
         }
-    }, [messages])
+    }, [messages]);
+
+    const setColor = (dataObj, color) => {
+        dataObj.borderColor = [color];
+        dataObj.backgroundColor = [color];
+        dataObj.pointBackgroundColor = color;
+        dataObj.pointBorderColor = color;
+
+    }
 
     return (
-        <Line data={data} />
+        <>
+        { data && <Line data={data} /> }
+        </>
     )
 }
 

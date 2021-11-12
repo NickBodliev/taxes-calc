@@ -1,3 +1,4 @@
+import { Badge, Heading, Stack } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 
@@ -49,11 +50,19 @@ function LineChart({messages}) {
         dataObj.pointBorderColor = color;
     }
 
-    return (
-        <>
-        { data && <Line data={data} /> }
-        </>
-    )
+    if(messages && messages.length > 1){
+        return (
+            <>
+            { data && <Line data={data} /> }
+            </>
+        )
+    }else{
+        return (
+            <Stack spacing="loose" alignment="center" distribution="center">
+                <Badge>In order to see the chart you need to have at least 2 records</Badge>
+            </Stack>
+        )
+    }
 }
 
 export default LineChart

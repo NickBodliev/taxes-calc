@@ -55,6 +55,7 @@ export default function history () {
         <>
             { user && <>
                         <PastRecords messages={pastMessages} />
+                        <br/>
                         <LineChart messages={pastMessages} />
                      </>
             }

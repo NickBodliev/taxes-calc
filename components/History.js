@@ -4,6 +4,7 @@ import { onSnapshot, doc } from 'firebase/firestore'
 import { db, auth } from '../firebase/initFirebase'
 import PastRecords from './PastRecords'
 import { onAuthStateChanged } from '@firebase/auth';
+import LineChart from './LineChart';
 
 export default function history () {
     const [user, setUser] = useState(null);
@@ -52,7 +53,11 @@ export default function history () {
 
     return (
         <>
-            { user && <PastRecords messages={pastMessages} />}
+            { user && <>
+                        <PastRecords messages={pastMessages} />
+                        <LineChart messages={pastMessages} />
+                     </>
+            }
         </>
     )
 }

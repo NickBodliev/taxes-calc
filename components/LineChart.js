@@ -28,11 +28,16 @@ function LineChart({messages}) {
             setColor(earnings, 'rgba(255, 206, 86, 0.5)');
             setColor(taxes, 'rgba(54, 162, 235, 0.3)');
             setColor(guadagnoPuro, 'rgba(255, 0, 255, 0.3)');
+            earnings.fill =  true;
+            taxes.fill =  true;
+            guadagnoPuro.fill =  true;
+            earnings.tension = 0.5;
+            taxes.tension = 0.5;
+            guadagnoPuro.tension = 0.5;
             const data = {
                 labels: years,
                 datasets: [ earnings, taxes, guadagnoPuro ]
             }
-            console.log(data);
             setData(data);
         }
     }, [messages]);
@@ -42,7 +47,6 @@ function LineChart({messages}) {
         dataObj.backgroundColor = [color];
         dataObj.pointBackgroundColor = color;
         dataObj.pointBorderColor = color;
-
     }
 
     return (

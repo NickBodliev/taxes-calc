@@ -94,9 +94,18 @@ export default function Layout({ children }) {
     </Navigation>
   );
 
+  const logo = {
+    width: 80,
+    topBarSource: './logo.svg',
+    contextualSaveBarSource: './logo.svg',
+    url: '/',
+    accessibilityLabel: 'App Logo'
+  };
+
   return (
     <>
       <Frame
+        logo={logo}
         topBar={topBarMarkup}
         navigation={navigationMarkup}
         showMobileNavigation={mobileNavigationActive}

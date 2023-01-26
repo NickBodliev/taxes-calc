@@ -5,17 +5,6 @@ import Layout from '../components/Layout'
 
 function MyApp({ Component, pageProps }) {
 
-  const theme = {
-    logo: {
-      width: 80,
-      topBarSource:
-        './logo.svg',
-      // contextualSaveBarSource:
-      // '/logo.svg',
-      url: '/'
-    },
-  };
-
   const i18n={
     Polaris: {
       Frame: {
@@ -29,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <AppProvider theme={theme} i18n={i18n} >
+    <AppProvider i18n={i18n} >
       <Layout>
         <Component {...pageProps} />
       </Layout>

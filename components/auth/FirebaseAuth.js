@@ -51,7 +51,8 @@ function FirebaseAuth() {
     {label: 'Società di Capitali', value: 'societa-di-capitali'},
     {label: 'Società di Persone', value: 'societa-di-persone'},
     {label: 'Partita IVA Ordinaria', value: 'partita-iva-ordinaria'},
-    {label: 'Partita IVA Forfettaria', value: 'partita-iva-forfettaria'}
+    {label: 'Partita IVA Forfettaria', value: 'partita-iva-forfettaria'},
+    {label: 'Persona fisica', value: 'persona-fisica'}
   ];
 
   const updateActivityType = (activityType) => {

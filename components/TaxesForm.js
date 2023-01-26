@@ -69,6 +69,9 @@ export default function FormOnSubmitExample() {
         case 'partita-iva-forfettaria':
           result = calc.partitaIVAForfettaria(earnings, expenses);
           break;
+        case 'persona-fisica':
+          result = calc.personaFisica(earnings, expenses);
+          break;
       }
       return result;
     }

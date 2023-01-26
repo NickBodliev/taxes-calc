@@ -6,26 +6,26 @@ export const IVA = 22;
 export const IMPOSTA_SOSTITUTIVA = 15;
 export const INPS = 33.72;
 
-export const calcPercentage = (percentage, num) => {
+const calcPercentage = (percentage, num) => {
     return num/100*percentage;
 }
 
-export const scalaIVA = (earning, expenses) => {
+const scalaIVA = (earning, expenses) => {
     const earningIVA = calcPercentage(IVA, earning);
     const expensesIVA = calcPercentage(IVA, expenses);
     const IVAToPay = earningIVA - expensesIVA;
     return IVAToPay;
 }
 
-export const calcIRAP = (guadagno) => {
+const calcIRAP = (guadagno) => {
     return calcPercentage(IRAP, guadagno);
 }
 
-export const calcIRES = (guadagno) => {
+const calcIRES = (guadagno) => {
     return calcPercentage(IRES, guadagno);
 }
 
-export const calcIRPEF = (guadagnoAnnuo, utileSuCuiApplicare) => {
+const calcIRPEF = (guadagnoAnnuo, utileSuCuiApplicare) => {
     if(guadagnoAnnuo <= 15000){
         return calcPercentage(23, utileSuCuiApplicare);
     }else if(guadagnoAnnuo > 15000 && guadagnoAnnuo <= 28000){
@@ -37,6 +37,19 @@ export const calcIRPEF = (guadagnoAnnuo, utileSuCuiApplicare) => {
     }else if(guadagnoAnnuo > 75000){
         return calcPercentage(23, 15000) + calcPercentage(27, 13000) + calcPercentage(38, 27000) + calcPercentage(41, 20000) + calcPercentage(43, 20000);
     }
+}
+
+const calcIRPEF_aggiornato = (guadagnoAnnuo) => {
+    if(guadagnoAnnuo <= 15000){
+        return calcPercentage(23, guadagnoAnnuo);
+    }else if(guadagnoAnnuo > 15000 && guadagnoAnnuo <= 28000){
+        return calcPercentage(23, 15000) + calcPercentage(25, guadagnoAnnuo - 15000);
+    }else if(guadagnoAnnuo > 28000 && guadagnoAnnuo <= 50000){
+        return calcPercentage(23, 15000) + calcPercentage(25, 13000) + calcPercentage(35, guadagnoAnnuo - 28000);
+    }else if(guadagnoAnnuo > 50000){
+        return calcPercentage(23, 15000) + calcPercentage(25, 13000) + calcPercentage(35, 22000) + calcPercentage(38, guadagnoAnnuo - 50000);
+    }
+    return 0;
 }
 
 export const societaDiPersone = (earning, expenses) => {
@@ -82,6 +95,12 @@ export const partitaIVAForfettaria = (earning, expenses) => {
         const guadagnoPuro = earning - taxes - (expenses - imposta);
         return {taxes: taxes, guadagnoPuro: guadagnoPuro};
     }
+}
+
+export const personaFisica = (earning, expenses) => {
+    const taxes = calcIRPEF_aggiornato(earning);
+    const guadagnoPuro = earning - taxes;
+    return {taxes: taxes, guadagnoPuro: guadagnoPuro};
 }
 
 

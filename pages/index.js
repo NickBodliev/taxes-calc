@@ -47,6 +47,9 @@ export default function Home() {
         case 'partita-iva-forfettaria':
           setActivityTypeOutput('Partita IVA Forfettaria');
           break;
+        case 'persona-fisica':
+          setActivityTypeOutput('Persona fisica');
+          break;
         default:
           setActivityTypeOutput('');
       }

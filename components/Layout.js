@@ -10,6 +10,8 @@ import { db, auth } from '../firebase/initFirebase'
 import { getActivityType } from "./cloudFirestore/ActivityType";
 import { doc, onSnapshot } from "@firebase/firestore";
 
+React.useLayoutEffect = React.useEffect
+
 export default function Layout({ children }) {
   const [user, setUser] = useState();
   const [activityType, setActivityType] = useState(null);

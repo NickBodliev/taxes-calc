@@ -104,6 +104,7 @@ export default function FormOnSubmitExample() {
           <Stack>
             <Stack.Item fill>
               <TextField
+                id="earnings"
                 value={earnings}
                 onChange={handleEarningsChange}
                 label="Earnings"
@@ -114,6 +115,7 @@ export default function FormOnSubmitExample() {
             </Stack.Item>
             <Stack.Item fill>
               <TextField
+                id="expenses"
                 value={expenses}
                 onChange={handleExpensesChange}
                 label="Expenses"
@@ -135,7 +137,7 @@ export default function FormOnSubmitExample() {
             </Stack.Item>
             <Stack.Item fill>
               <Select
-                //label="Year"
+                id="year"
                 options={years}
                 onChange={handleYearChange}
                 value={year}

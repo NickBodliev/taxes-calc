@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth"
 import { auth } from '../../firebase/initFirebase'
 import { useRouter } from 'next/router';
-import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select, TextStyle, Toast } from '@shopify/polaris';
+import { Card, ContextualSaveBar, EmptyState, Layout, Page, Select, Text, Banner, Toast } from '@shopify/polaris';
 import { saveActivityType } from '../cloudFirestore/Write'
 import { getActivityType } from '../cloudFirestore/ActivityType';
 
@@ -26,6 +26,11 @@ function FirebaseAuth() {
         });
     }, [])
 
+    useEffect(() => {
+      activityType != DBActivityType ? setUnsavedChanges(true) : setUnsavedChanges(false);
+    }, [activityType])
+    
+
     const login = () => {
         signInWithPopup(auth, new GoogleAuthProvider)
         .catch((error) => {
@@ -45,7 +50,7 @@ function FirebaseAuth() {
     }
 
 
-  const handleSelectChange = value => {setActivityType(value); setUnsavedChanges(true);};
+  const handleSelectChange = value => { setActivityType(value); };
 
   const activityTypes = [
     {label: 'Società di Capitali', value: 'societa-di-capitali'},
@@ -79,20 +84,24 @@ function FirebaseAuth() {
           {user ?
             <Layout.Section>
               <Card
-                title="Select your activity type in order to start using Tax Tracker"
+                title="Select your activity type:"
                 sectioned
               >
                 <Select
-                  label="Activity Type"
                   options={activityTypes}
                   onChange={handleSelectChange}
                   value={activityType}
                   placeholder=" ~ Activity Type ~ "
                   //error={ }
                 />
-                <TextStyle variation="subdued">
-                  If you change your activity type, all past records will be erased
-                </TextStyle>
+                { unsavedChanges &&
+                  <>
+                    <br/>
+                    <Banner status="warning">
+                      <Text variant="bodyMd" as="span">If you change your activity type, all past records will be erased</Text>
+                    </Banner>
+                  </>
+                }
               </Card>
             </Layout.Section>
           :

@@ -10,6 +10,8 @@ import { db, auth } from '../firebase/initFirebase'
 import { getActivityType } from "./cloudFirestore/ActivityType";
 import { doc, onSnapshot } from "@firebase/firestore";
 
+React.useLayoutEffect = React.useEffect
+
 export default function Layout({ children }) {
   const [user, setUser] = useState();
   const [activityType, setActivityType] = useState(null);
@@ -94,9 +96,18 @@ export default function Layout({ children }) {
     </Navigation>
   );
 
+  const logo = {
+    width: 80,
+    topBarSource: './logo.svg',
+    contextualSaveBarSource: './logo.svg',
+    url: '/',
+    accessibilityLabel: 'App Logo'
+  };
+
   return (
     <>
       <Frame
+        logo={logo}
         topBar={topBarMarkup}
         navigation={navigationMarkup}
         showMobileNavigation={mobileNavigationActive}

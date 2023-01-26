@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
     logo: {
       width: 80,
       topBarSource:
-        '/logo.svg',
+        './logo.svg',
       // contextualSaveBarSource:
       // '/logo.svg',
       url: '/'

@@ -25,7 +25,7 @@ export default function Layout({ children }) {
     []
   );
   const [active, setActive] = useState(false);
-  const strictRedirect = (path) => { console.log(activityType);(user && activityType ? redirect(path) : setActive(true)) };
+  const strictRedirect = (path) => { (user && activityType ? redirect(path) : setActive(true)) };
   const redirect = (path) => { router.push(path) };
 
   useEffect(() => {

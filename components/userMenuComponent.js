@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from '@firebase/auth';
 import { auth } from '../firebase/initFirebase'
 import { useRouter } from "next/router";
 
-export function userMenuComponent(user) {
+export function UserMenuComponent(user) {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const router = useRouter();
     const toggleIsUserMenuOpen = useCallback(

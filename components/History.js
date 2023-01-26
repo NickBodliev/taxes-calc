@@ -6,7 +6,7 @@ import PastRecords from './PastRecords'
 import { onAuthStateChanged } from '@firebase/auth';
 import LineChart from './LineChart';
 
-export default function history () {
+export default function History () {
     const [user, setUser] = useState(null);
     const [pastMessages, setPastMessages] = useState(null);
 

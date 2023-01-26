@@ -5,7 +5,7 @@ import { Frame, Navigation, Toast, TopBar } from "@shopify/polaris";
 import { ChatMajor, HomeMajor, KeyMajor } from "@shopify/polaris-icons";
 
 import { onAuthStateChanged, signOut } from "firebase/auth"
-import { userMenuComponent } from "./userMenuComponent";
+import { UserMenuComponent } from "./UserMenuComponent";
 import { db, auth } from '../firebase/initFirebase'
 import { getActivityType } from "./cloudFirestore/ActivityType";
 import { doc, onSnapshot } from "@firebase/firestore";
@@ -15,7 +15,7 @@ export default function Layout({ children }) {
   const [activityType, setActivityType] = useState(null);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
   const router = useRouter();
-  const userMenuMarkup = userMenuComponent(user);
+  const userMenuMarkup = UserMenuComponent(user);
   const skipToContentRef = useRef(null);
   const toggleMobileNavigationActive = useCallback(
     () =>

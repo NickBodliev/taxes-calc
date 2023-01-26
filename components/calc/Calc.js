@@ -41,70 +41,45 @@ export const calcIRPEF = (guadagnoAnnuo, utileSuCuiApplicare) => {
 
 export const societaDiPersone = (earning, expenses) => {
     const IVAToPay = scalaIVA(earning, expenses);
-    console.log('IVA to pay: ' + IVAToPay);
     const guadagno = earning - expenses;
-    console.log('guadagno: ' + guadagno);
     const IRAPToPay = calcIRAP(guadagno);
-    console.log('IRAP to pay: ' + IRAPToPay);
     const taxes = IVAToPay + IRAPToPay;
-    console.log('tot taxes to pay: ' + taxes);
     const guadagnoPuro = guadagno - taxes;
-    console.log('guadagno puro: ' + guadagnoPuro);
     return {taxes: taxes, guadagnoPuro: guadagnoPuro};
 }
 
 export const societaDiCapitali = (earning, expenses) => {
     const IVAToPay = scalaIVA(earning, expenses);
-    console.log('IVA to pay: ' + IVAToPay);
     const guadagno = earning - expenses;
-    console.log('guadagno: ' + guadagno);
     const IRAPToPay = calcIRAP(guadagno);
-    console.log('IRAP to pay: ' + IRAPToPay);
     const IRESToPay = calcIRES(guadagno - IRAPToPay);
-    console.log('IRES to pay: ' + IRESToPay);
     const taxes = IVAToPay + IRAPToPay + IRESToPay;
-    console.log('tot taxes to pay: ' + taxes);
     const guadagnoPuro = guadagno - taxes;
-    console.log('guadagno puro: ' + guadagnoPuro);
     return {taxes: taxes, guadagnoPuro: guadagnoPuro};
 }
 
 export const partitaIVAOrdinaria = (earning, expenses) => {
     const IVAToPay = scalaIVA(earning, expenses);
-    console.log('IVA to pay: ' + IVAToPay);
     const guadagno = earning - expenses;
-    console.log('guadagno: ' + guadagno);
     const INPSToPay = calcPercentage(33.72, guadagno);
-    console.log('INPS to pay: ' + INPSToPay);
     const IRAPToPay = calcIRAP(guadagno-INPSToPay);
-    console.log('IRAP to pay: ' + IRAPToPay);
     const IRPEFToPay = calcIRPEF(guadagno, guadagno-INPSToPay-IRAPToPay);
-    console.log('IRPEF to pay: ' + IRPEFToPay);
     const taxes = IVAToPay +INPSToPay - IRAPToPay - IRPEFToPay;
-    console.log('tot taxes to pay: ' + taxes);
     const guadagnoPuro = guadagno - taxes;
-    console.log('guadagno puro: ' + guadagnoPuro);
     return {taxes: taxes, guadagnoPuro: guadagnoPuro};
 }
 
 export const partitaIVAForfettaria = (earning, expenses) => {
     const imposta = calcPercentage(22, earning);
-    console.log('imposta to pay: ' + imposta);
     const INPSToPay = calcPercentage(INPS, earning - imposta);
-    console.log('INPS to pay: ' + INPSToPay);
     const impostaSostitutiva = calcPercentage(IMPOSTA_SOSTITUTIVA, earning - imposta - INPSToPay);
-    console.log('imposta sostitutiva to pay: ' + impostaSostitutiva);
     if(expenses < imposta){
         const taxes = imposta + INPSToPay + impostaSostitutiva;
-        console.log('tot taxes to pay: ' + taxes);
         const guadagnoPuro = earning - taxes + (imposta - expenses);
-        console.log('guadagno puro: ' + guadagnoPuro);
         return {taxes: taxes, guadagnoPuro: guadagnoPuro};
     }else{
         const taxes = imposta + INPSToPay + impostaSostitutiva;
-        console.log('tot taxes to pay: ' + taxes);
         const guadagnoPuro = earning - taxes - (expenses - imposta);
-        console.log('guadagno puro: ' + guadagnoPuro);
         return {taxes: taxes, guadagnoPuro: guadagnoPuro};
     }
 }

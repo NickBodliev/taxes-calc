@@ -44,7 +44,7 @@ function Messages({messages}) {
                 <IndexTable.Cell>{earnings}</IndexTable.Cell>
                 <IndexTable.Cell>{taxes}</IndexTable.Cell>
                 <IndexTable.Cell>{guadagnoPuro}</IndexTable.Cell>
-                <Button onClick={() => removeRecord(year)} icon={DeleteMinor}/>
+                <IndexTable.Cell><Button onClick={() => removeRecord(year)} icon={DeleteMinor}/></IndexTable.Cell>
               </IndexTable.Row>
             ),
           );

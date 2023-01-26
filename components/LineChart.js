@@ -1,5 +1,6 @@
 import { Badge, Heading, Stack } from '@shopify/polaris';
 import React, { useEffect, useState } from 'react'
+import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2'
 
 function LineChart({messages}) {

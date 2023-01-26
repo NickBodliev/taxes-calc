@@ -26,7 +26,7 @@ export default function Home() {
           redirect('/auth');
       }
     });
-  }, [])
+  })
 
   const getDBActivityType = async (userEmail) => {
     const dbActivityType = await getActivityType(userEmail)
